@@ -9,14 +9,13 @@ if [ -z "${PROJECT}" ]; then
 	exit 1
 fi
 
-BUILD_AREA=build-area
+BUILD_AREA=../build-area
 PPAS=${PPAS:-builder:$PROJECT-core/trunk}
 SERIES=${SERIES:-precise}
 BUILDNO=1
 
 mkdir -p $BUILD_AREA
 
-cd ${PROJECT}
 VERSION="$(dpkg-parsechangelog | sed -n -e 's/Version: //p')"
 NOEPOCH_VERSION="$(echo ${VERSION} | cut -d':' -f 2)"
 PACKAGING_REVNO="$(git log --oneline | wc -l)"
@@ -38,4 +37,3 @@ if ! [ "${DO_UPLOAD}" = "no" ]; then
 		dput --force $ppa "../${BUILD_AREA}/${PROJECT}_${NOEPOCH_PKGVERSION}_source.changes"
 	done
 fi
-cd ..
