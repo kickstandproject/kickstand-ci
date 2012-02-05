@@ -1,4 +1,6 @@
 #!/bin/sh
+# Based on OpenStack's ppa_script.sh
+# URL: https://github.com/openstack/openstack-ci
 
 set -e
 
