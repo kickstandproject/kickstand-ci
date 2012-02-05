@@ -19,8 +19,21 @@ mkdir -p $BUILD_AREA
 VERSION="$(dpkg-parsechangelog | sed -n -e 's/Version: //p')"
 NOEPOCH_VERSION="$(echo ${VERSION} | cut -d':' -f 2)"
 PACKAGING_REVNO="$(git log --oneline | wc -l)"
-PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
-NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
+
+BUILDNO=1
+while true
+do
+	PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
+	NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
+
+	if grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/*
+	then
+		echo "We've already built a ${PKGVERSION} of ${PROJECT}. Incrementing build number."
+		BUILDNO=$(($BUILDNO + 1))
+	else
+		break
+	fi
+done
 
 ./debian/rules get-orig-source
 
