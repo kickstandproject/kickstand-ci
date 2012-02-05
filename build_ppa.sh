@@ -34,6 +34,6 @@ git-buildpackage -S --git-ignore-new --git-export=WC
 if ! [ "${DO_UPLOAD}" = "no" ]; then
 	for ppa in $PPAS
 	do
-		dput --force $ppa "../${BUILD_AREA}/${PROJECT}_${NOEPOCH_PKGVERSION}_source.changes"
+		dput --force $ppa "${BUILD_AREA}/${PROJECT}_${NOEPOCH_PKGVERSION}_source.changes"
 	done
 fi
