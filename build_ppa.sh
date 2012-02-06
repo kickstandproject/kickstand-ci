@@ -11,7 +11,7 @@ fi
 
 BUILD_AREA=../build-area
 PPAS=${PPAS:-builder:$PROJECT-core/trunk}
-SERIES=${SERIES:-precise}
+
 BUILDNO=1
 
 mkdir -p $BUILD_AREA
@@ -23,8 +23,8 @@ PACKAGING_REVNO="$(git log --oneline | wc -l)"
 BUILDNO=1
 while true
 do
-	PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
-	NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}~${SERIES}${BUILDNO}"
+	PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}-${SERIES}${BUILDNO}"
+	NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}-${SERIES}${BUILDNO}"
 
 	if grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/*
 	then
@@ -40,6 +40,8 @@ done
 export DEBFULLNAME="Polybeacon Packaging Team"
 export DEBEMAIL="packages@polybeacon.com"
 export GPGKEY=1676B27F
+
+SERIES=${SERIES:-precise}
 
 dch -b --force-distribution --v "${PKGVERSION}" "Automated PPA build. Packaging revision: ${PACKAGING_REVNO}." -D $SERIES
 git-buildpackage -S --git-ignore-new --git-export=WC
