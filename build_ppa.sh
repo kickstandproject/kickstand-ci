@@ -16,6 +16,8 @@ BUILDNO=1
 
 mkdir -p $BUILD_AREA
 
+./debian/rules get-orig-source
+
 VERSION="$(dpkg-parsechangelog | sed -n -e 's/Version: //p')"
 NOEPOCH_VERSION="$(echo ${VERSION} | cut -d':' -f 2)"
 PACKAGING_REVNO="$(git log --oneline | wc -l)"
@@ -34,8 +36,6 @@ do
 		break
 	fi
 done
-
-./debian/rules get-orig-source
 
 export DEBFULLNAME="Polybeacon Packaging Team"
 export DEBEMAIL="packages@polybeacon.com"
