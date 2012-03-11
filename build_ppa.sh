@@ -30,7 +30,8 @@ do
 	PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}.${BUILDNO}${SERIES}"
 	NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}.${BUILDNO}${SERIES}"
 
-	if [ grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/* ]; then
+	if grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/*
+	then
 		echo "We've already built a ${PKGVERSION} of ${PROJECT}. Incrementing build number."
 		BUILDNO=$(($BUILDNO + 1))
 	else
