@@ -9,12 +9,14 @@ if [ -z "${PROJECT}" ]; then
 	exit 1
 fi
 
-BUILD_AREA=../build-area
+BUILD_AREA="../build-area"
 PPAS=${PPAS:-builder:$PROJECT-core/trunk}
 
 BUILDNO=1
 
-mkdir -p $BUILD_AREA
+if ! [ -d ${BUILD_AREA} ]; then
+	mkdir -p $BUILD_AREA
+fi
 
 ./debian/rules get-orig-source
 
@@ -28,8 +30,7 @@ do
 	PKGVERSION="${VERSION}~ppa${PACKAGING_REVNO}.${BUILDNO}${SERIES}"
 	NOEPOCH_PKGVERSION="${NOEPOCH_VERSION}~ppa${PACKAGING_REVNO}.${BUILDNO}${SERIES}"
 
-	if grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/*
-	then
+	if [ grep -q "${PROJECT}_${NOEPOCH_PKGVERSION}" ${BUILD_AREA}/* ]; then
 		echo "We've already built a ${PKGVERSION} of ${PROJECT}. Incrementing build number."
 		BUILDNO=$(($BUILDNO + 1))
 	else
@@ -47,8 +48,7 @@ dch -b --force-distribution --v "${PKGVERSION}" "Automated PPA build. Packaging 
 git-buildpackage -S --git-ignore-new --git-export=WC
 
 if ! [ "${DO_UPLOAD}" = "no" ]; then
-	for ppa in $PPAS
-	do
+	for ppa in $PPAS; do
 		dput --force $ppa "${BUILD_AREA}/${PROJECT}_${NOEPOCH_PKGVERSION}_source.changes"
 	done
 fi
