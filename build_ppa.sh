@@ -39,14 +39,20 @@ do
 	fi
 done
 
-export DEBFULLNAME="Polybeacon Packaging Team"
-export DEBEMAIL="packages@polybeacon.com"
-export GPGKEY=1676B27F
+export DEBFULLNAME="Kickstand Packaging Team"
+export DEBEMAIL="packages@kickstand-project.org"
+export GPGKEY=6E14C2BE
 
 SERIES=${SERIES:-precise}
 
+if [ "${UPLOAD_TARBALL}" = "yes" ]; then
+	SIGNPPA="-sd"
+else
+	SIGNPPA="-sa"
+fi
+
 dch -b --force-distribution --v "${PKGVERSION}" "Automated PPA build. Packaging revision: ${PACKAGING_REVNO}." -D $SERIES
-git-buildpackage -S --git-ignore-new --git-export=WC
+git-buildpackage -S ${SIGNPPA} --git-ignore-new --git-export=WC
 
 if ! [ "${DO_UPLOAD}" = "no" ]; then
 	for ppa in $PPAS; do
