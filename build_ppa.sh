@@ -46,9 +46,9 @@ export GPGKEY=6E14C2BE
 SERIES=${SERIES:-precise}
 
 if [ "${UPLOAD_TARBALL}" = "yes" ]; then
-	SIGNPPA="-sd"
-else
 	SIGNPPA="-sa"
+else
+	SIGNPPA="-sd"
 fi
 
 dch -b --force-distribution --v "${PKGVERSION}" "Automated PPA build. Packaging revision: ${PACKAGING_REVNO}." -D $SERIES
