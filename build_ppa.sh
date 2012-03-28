@@ -10,6 +10,7 @@ if [ -z "${PROJECT}" ]; then
 fi
 
 BUILD_AREA="../build-area"
+TARBALL="../tarballs"
 PPAS=${PPAS:-builder:$PROJECT-core/trunk}
 
 BUILDNO=1
@@ -18,7 +19,11 @@ if ! [ -d ${BUILD_AREA} ]; then
 	mkdir -p $BUILD_AREA
 fi
 
-./debian/rules get-orig-source
+FILENAME="$(./debian/rules print-version | grep Filename | cut -d':' -f 2 | sed -e 's/^[ \t]*//')"
+
+if ! [ -f "${TARBALL}/${FILENAME}" ]; then
+	./debian/rules get-orig-source
+fi
 
 VERSION="$(dpkg-parsechangelog | sed -n -e 's/Version: //p')"
 NOEPOCH_VERSION="$(echo ${VERSION} | cut -d':' -f 2)"
