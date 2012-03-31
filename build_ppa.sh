@@ -22,6 +22,7 @@ fi
 FILENAME="$(./debian/rules print-version | grep Filename | cut -d':' -f 2 | sed -e 's/^[ \t]*//')"
 
 if ! [ -f "${TARBALL}/${FILENAME}" ]; then
+	UPLOAD_TARBALL=yes
 	./debian/rules get-orig-source
 fi
 
