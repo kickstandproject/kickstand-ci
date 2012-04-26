@@ -19,7 +19,7 @@ if ! [ -d ${BUILD_AREA} ]; then
 	mkdir -p $BUILD_AREA
 fi
 
-FILENAME="$(./debian/rules print-version | grep Filename | cut -d':' -f 2 | sed -e 's/^[ \t]*//')"
+FILENAME="$(./debian/rules print-filename | grep Filename | cut -d':' -f 2 | sed -e 's/^[ \t]*//')"
 
 if ! [ -f "${TARBALL}/${FILENAME}" ]; then
 	UPLOAD_TARBALL=yes
