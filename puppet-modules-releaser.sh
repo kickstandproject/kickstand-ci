@@ -2,6 +2,8 @@
 
 set -e
 
+git checkout master
+
 VERSION="$(grep version Modulefile | cut -d' ' -f 2 | sed -e "s/'//g")"
 MAJOR="$(echo ${VERSION} | cut -d '.' -f 1)"
 MINOR="$(echo ${VERSION} | cut -d '.' -f 2)"
