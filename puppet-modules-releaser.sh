@@ -13,5 +13,5 @@ git tag -u 6E14C2BE v${VERSION} -m "Release v${VERSION}"
 sed -i "s/'${VERSION}'/'${VERSIONBUMP}'/g" Modulefile
 
 git commit -a -s -m "Bump module version to ${VERSIONBUMP}"
-git push
-git push --tags
+git push origin master
+git push origin v${VERSION}
