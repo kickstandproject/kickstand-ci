@@ -2,6 +2,7 @@
 
 set -e
 
+git reset --hard HEAD
 git checkout master
 
 VERSION="$(grep version Modulefile | cut -d' ' -f 2 | sed -e "s/'//g")"
